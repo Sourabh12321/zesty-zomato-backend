@@ -105,7 +105,7 @@ def login():
 
 @app.route("/")
 def home():
-    return render_template("Home page")
+    return jsonify({"msg":"Home Page"})
 
 @app.route("/chatbot")
 def chatbot():
