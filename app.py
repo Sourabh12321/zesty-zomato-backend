@@ -34,9 +34,6 @@ cart_collection = db['cart']
 users = db['user']
 
 
-
-
-
 @app.route("/register", methods=["POST"])
 def register():
     # Get the registration data from the request
@@ -420,4 +417,4 @@ def emit_status_update(order_id, new_status):
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 3000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port,debug=True)
