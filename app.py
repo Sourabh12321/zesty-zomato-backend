@@ -105,7 +105,7 @@ def login():
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("Home page")
 
 @app.route("/chatbot")
 def chatbot():
