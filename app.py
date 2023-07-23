@@ -419,4 +419,5 @@ def emit_status_update(order_id, new_status):
 
 
 if __name__ == "__main__":
-    socketio.run(app, port=3000)
+    port = int(os.environ.get("PORT", 3000))
+    app.run(host="0.0.0.0", port=port)
