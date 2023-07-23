@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Zesty Zomato - Add Dish</title>
+</head>
+<style>
+  body {
+    background-color: rgb(24, 13, 13);
+  }
+
+  .navbar {
+    width: 100%;
+    height: 70px;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+  }
+
+  #img>img {
+    height: 70px;
+    width: 100px
+  }
+
+  #ul {
+    width: 70%;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  #ul>h4>a {
+    text-decoration: none;
+    color: white
+  }
+  h1 {
+    color: white;
+    text-align: center;
+  }
+
+  button {
+    background-color: aqua;
+    color: black;
+  }
+
+  form{
+    width:10%;
+    margin:auto;
+    color:white;
+  }
+  form>input{
+    margin: 10px 0px;
+   
+  }
+</style>
+<body>
+  <div class="navbar">
+    <div id="img">
+      <img
+        src="../static/images/logo.png"
+        alt="">
+    </div>
+    <div id=ul>
+      <h4><a href="./register.html">Login/Signup</a></h4>
+      <h4><a href="./add_dish.html">Add Dish</a></h4>
+      <h4><a href="./update_dish.html">Update Dish</a></h4>
+      <h4><a href="./update_order.html">Update Order</a></h4>
+      <h4><a href="./review_orders.html">Review Orders</a></h4>
+      <h4><a href="./new_order.html">Order Now</a></h4>
+      <h4><a href="./chatbot.html">Chatbot</a></h4>
+    </div>
+  </div>
+  <h1>Add Dish</h1>
+
+  <form id="addDishForm" method="POST" action="/add_dish">
+    
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br>
+
+    <label for="price">Image:</label>
+    <input type="text" id="image" name="image" required><br>
+
+    <label for="price">Price:</label>
+    <input type="text" id="price" name="price" required><br>
+
+    <button type="submit">Add</button>
+  </form>
+</body>
+
+</html>
+<script>
+  document.getElementById('addDishForm').addEventListener('submit', function(event) {
+  event.preventDefault();  // Prevent the default form submission
+
+  // Get form values
+  var name = document.getElementById('name').value;
+  var price = document.getElementById('price').value;
+  var image = document.getElementById('image').value;
+
+  // Create payload object
+  var data = {
+    name: name,
+    image:image,
+    price: price
+  };
+
+  // Send the request
+  fetch('http://localhost:3000/add_dish', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'  // Set the Content-Type header to JSON
+    },
+    body: JSON.stringify(data)  // Convert the payload object to JSON string
+  })
+  .then(response => response.json())
+  .then(result => {
+    // Handle the response
+    console.log(result);
+  })
+  .catch(error => {
+    // Handle any errors
+    console.error(error);
+  });
+});
+
+</script>

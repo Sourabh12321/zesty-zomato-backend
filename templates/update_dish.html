@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Zesty Zomato - Update Dish</title>
+</head>
+<style>
+  body {
+    background-color: rgb(24, 13, 13);
+  }
+
+  .navbar {
+    width: 100%;
+    height: 70px;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+  }
+
+  #img>img {
+    height: 70px;
+    width: 100px
+  }
+
+  #ul {
+    width: 70%;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  #ul>h4>a {
+    text-decoration: none;
+    color: white
+  }
+  h1 {
+    color: white;
+    text-align: center;
+  }
+
+  button {
+    background-color: aqua;
+    color: black;
+  }
+
+  form{
+    width:10%;
+    margin:auto;
+    color:white;
+  }
+  form>input{
+    margin: 10px 0px;
+   
+  }
+</style>
+<body>
+  <div class="navbar">
+    <div id="img">
+      <img
+        src="../static/images/logo.png"
+        alt="">
+    </div>
+    <div id=ul>
+      <h4><a href="./register.html">Login/Signup</a></h4>
+      <h4><a href="./add_dish.html">Add Dish</a></h4>
+      <h4><a href="./update_dish.html">Update Dish</a></h4>
+      <h4><a href="./update_order.html">Update Order</a></h4>
+      <h4><a href="./review_orders.html">Review Orders</a></h4>
+      <h4><a href="./new_order.html">Order Now</a></h4>
+      <h4><a href="./chatbot.html">Chatbot</a></h4>
+    </div>
+
+  </div>
+  <h1>Update Dish</h1>
+
+  <form id="updateDishForm">
+    <label for="id">ID:</label>
+    <input type="text" id="id" name="id" required><br>
+
+    <label for="availability">Availability:</label>
+    <input type="checkbox" id="availability" name="availability" value="true"><br>
+
+    <label for="image">image:</label>
+    <input type="text" id="image" name="image" ><br>
+
+    <label for="price">price:</label>
+    <input type="text" id="price" name="price" ><br>
+
+    <button type="submit">Update</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    // Function to handle form submission
+    function handleFormSubmit(event) {
+      event.preventDefault(); // Prevent form submission
+      
+      // Get the form values
+      var id = document.getElementById('id').value;
+      var image = document.getElementById('image').value;
+      var price = document.getElementById('price').value;
+      var availability = document.getElementById('availability').checked;
+
+      // Create the request body object
+      var requestBody = {
+        id: id,
+        image:image,
+        price:price,
+        availability: availability
+      };
+
+      // Send the request to the server using fetch
+      fetch('http://localhost:3000/update_dish', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+      .then(response => {
+        // Check if the response is JSON
+        if (response.headers.get('content-type').includes('application/json')) {
+          return response.json();
+        } else {
+          throw new Error('Unsupported Media Type');
+        }
+      })
+      .then(data => {
+        // Handle the response from the server
+        if (data.message) {
+          // Display the success message
+          document.getElementById('message').textContent = data.message;
+        } else {
+          throw new Error('Invalid response from server');
+        }
+      })
+      .catch(error => {
+        // Handle the error
+        if (error.message === 'Unsupported Media Type') {
+          // Display the specific error message for Unsupported Media Type
+          document.getElementById('message').textContent = 'Unsupported Media Type. Please try again.';
+        } else {
+          // Display a general error message
+          document.getElementById('message').textContent = 'An error occurred while updating the dish. Please try again later.';
+        }
+      });
+    }
+
+    // Attach the form submit event listener
+    var form = document.getElementById('updateDishForm');
+    form.addEventListener('submit', handleFormSubmit);
+  </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+<!-- ------------------------------------------------------ -->
+<!-- <!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Zesty Zomato - Update Dish</title>
+</head>
+
+<body>
+  <h1>Update Dish</h1>
+
+  <form id="updateDishForm">
+    <label for="id">ID:</label>
+    <input type="text" id="id" name="id" required><br>
+
+    <label for="availability">Availability:</label>
+    <input type="checkbox" id="availability" name="availability" value="true"><br>
+
+    <button type="submit">Update</button>
+  </form>
+
+  <script>
+    // Function to handle form submission
+    function handleFormSubmit(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Get the form values
+      var id = document.getElementById('id').value;
+      var availability = document.getElementById('availability').checked;
+      console.log(availability)
+
+      // Create the request body as JSON
+      var requestBody = JSON.stringify({
+        id: id,
+        availability: availability
+      });
+
+      // Send the request to the server using fetch
+      fetch('/update_dish', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: requestBody
+      })
+        .then(response => {
+          // Handle the response from the server
+          if (response.ok) {
+            // Successful update, do something
+            console.log('Dish updated successfully');
+          } else {
+            // Error occurred, handle the error
+            console.error('Failed to update dish');
+          }
+        })
+        .catch(error => {
+          // Error occurred, handle the error
+          console.error('An error occurred while updating the dish', error);
+        });
+    }
+
+    // Attach the form submit event listener
+    var form = document.getElementById('updateDishForm');
+    form.addEventListener('submit', handleFormSubmit);
+  </script>
+</body>
+
+</html> -->

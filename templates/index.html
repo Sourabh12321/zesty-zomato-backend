@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Zesty Zomato</title>
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+<style>
+  body {
+    background-color: rgb(24, 13, 13);
+  }
+
+  .navbar {
+    width: 100%;
+    height: 70px;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+  }
+
+  #img>img {
+    height: 70px;
+    width: 100px
+  }
+
+  #ul {
+    width: 70%;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  #ul>h4>a {
+    text-decoration: none;
+    color: white
+  }
+
+  #main {
+    width: 100%;
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  #main>div {
+    width: 230px;
+    height: 370px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: black;
+    color: white;
+    text-align: center;
+  }
+
+  #main>div>img {
+    padding-left: 12px;
+    height: 200px;
+    width: 200px;
+  }
+
+  h1 {
+    color: white;
+    text-align: center;
+  }
+
+  button {
+    background-color: aqua;
+    color: black;
+  }
+</style>
+
+<body>
+  <div class="navbar">
+    <div id="img">
+      <img
+        src="../static/images/logo.png"
+        alt="">
+    </div>
+    <div id=ul>
+      <h4><a href="./register.html">Login/Signup</a></h4>
+      <h4><a href="./add_dish.html">Add Dish</a></h4>
+      <h4><a href="./update_dish.html">Update Dish</a></h4>
+      <h4><a href="./update_order.html">Update Order</a></h4>
+      <h4><a href="./review_orders.html">Review Orders</a></h4>
+      <h4><a href="./new_order.html">Order Now</a></h4>
+      <h4><a href="./chatbot.html">Chatbot</a></h4>
+    </div>
+
+  </div>
+  <h1>Welcome to Zesty Zomato</h1>
+  <div id="main">
+
+  </div>
+  <h2>Menu:</h2>
+  <ul>
+    <li><a href="/menu" id="menu">View Menu</a></li>
+    <li><a href="/add_dish">Add Dish</a></li>
+    <li><a href="/update_dish">Update Dish</a></li>
+    <li><a href="./delete_dish.html">Delete Dish</a></li>
+  </ul>
+
+  <h2>Orders:</h2>
+  <ul>
+    <li><a href="/new_order">Place New Order</a></li>
+    <li><a href="/update_order">Update Order</a></li>
+    <li><a href="/review_orders">Review Orders</a></li>
+  </ul>
+
+  <p><a href="/exit">Exit</a></p>
+</body>
+
+</html>
+<script>
+  let main = document.querySelector("#main");
+  fetch('http://localhost:3000/menu')
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      // Update the menu table with the received data
+      getData(data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+    
+
+  function getData(data) {
+    main.innerHTML = "";
+    console.log(data);
+    data.forEach((el, i) => {
+      let div = document.createElement('div');
+
+      let img = document.createElement('img');
+      img.setAttribute("src", el.image)
+
+      let name = document.createElement('p');
+      name.textContent = el.name;
+
+      let price = document.createElement('p');
+      price.textContent = `$${el.price}`;
+
+      let Available = document.createElement('p');
+      Available.textContent = el.availability ? 'Available' : 'Not Available';
+
+      let order = document.createElement('button');
+      order.textContent = "order"
+      order.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log("click");
+        if (el.availability) {
+          let cart = JSON.parse(localStorage.getItem("cart")) || [];
+          cart.push(el);
+          localStorage.setItem("cart", JSON.stringify(cart));
+          alert("Added successfully");
+        }else{
+          alert("item is not Available");
+        }
+
+      })
+
+      div.append(img, name, price, Available, order);
+      main.append(div);
+    });
+  }
+</script>

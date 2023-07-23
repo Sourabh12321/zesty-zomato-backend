@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Zesty Zomato</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<style>
+    /* Your existing CSS styles here */
+
+    /* Additional styles for login and signup toggles */
+    #login-signup-toggle {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    #login-signup-toggle button {
+        padding: 10px 20px;
+        background-color: #f2f2f2;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    #login-signup-toggle button:first-child {
+        border-right: 1px solid #ccc;
+    }
+
+    #login-form,
+    #signup-form {
+        display: none;
+    }
+
+    #login-form.visible,
+    #signup-form.visible {
+        display: block;
+    }
+
+    body {
+        background-color: rgb(24, 13, 13);
+    }
+
+    .navbar {
+        width: 100%;
+        height: 70px;
+        background-color: black;
+        display: flex;
+        justify-content: space-between;
+        color: white;
+    }
+
+    #img>img {
+        height: 70px;
+        width: 100px
+    }
+
+    #ul {
+        width: 70%;
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    #ul>h4>a {
+        text-decoration: none;
+        color: white
+    }
+
+    h1 {
+        color: white;
+        text-align: center;
+    }
+
+    button {
+        background-color: aqua;
+        color: black;
+    }
+
+    form {
+        width: 10%;
+        margin: auto;
+        color: white;
+    }
+
+    form>input {
+        margin: 10px 0px;
+
+    }
+</style>
+
+<body>
+    <div class="navbar">
+        <div id="img">
+            <img src="../static/images/logo.png" alt="">
+        </div>
+        <div id=ul>
+            <h4><a href="./register.html">Login/Signup</a></h4>
+            <h4><a href="./add_dish.html">Add Dish</a></h4>
+            <h4><a href="./update_dish.html">Update Dish</a></h4>
+            <h4><a href="./update_order.html">Update Order</a></h4>
+            <h4><a href="./review_orders.html">Review Orders</a></h4>
+            <h4><a href="./new_order.html">Order Now</a></h4>
+            <h4><a href="./chatbot.html">Chatbot</a></h4>
+        </div>
+    </div>
+
+    <h1>Welcome to Zesty Zomato</h1>
+
+    <div id="login-signup-toggle">
+        <button id="login-toggle">Login</button>
+        <button id="signup-toggle">Sign Up</button>
+    </div>
+
+    <form id="login-form" class="visible">
+        <h2>Login</h2>
+        <input type="text" placeholder="email" id="email" name="email" required>
+        <input type="password" placeholder="Password" id="password" name="password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <form id="signup-form">
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="Username" id="name" name="username" required>
+        <input type="email" placeholder="Email" id="email" name="email" required>
+        <input type="password" placeholder="Password" id="password" name="password" required>
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <div id="main">
+        <!-- Your existing main content here -->
+    </div>
+
+
+
+
+    <script>
+        // Login and signup toggle functionality
+        const loginToggle = document.getElementById("login-toggle");
+        const signupToggle = document.getElementById("signup-toggle");
+        const loginForm = document.getElementById("login-form");
+        const signupForm = document.getElementById("signup-form");
+
+        signupForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            // Get the form input values
+            const name = signupForm.name.value;
+            const email = signupForm.email.value;
+            const password = signupForm.password.value;
+
+            // Create the registration data object
+            const registrationData = {
+                name: name,
+                email: email,
+                password: password
+            };
+            console.log(registrationData)
+
+            // Send a POST request to the server
+            fetch("http://localhost:3000/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(registrationData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the server
+                    console.log(data);
+                    if (data.message === "Registration successful") {
+                        // Registration successful, redirect to the login page
+                        alert("signup successfully")
+                    } else {
+                        // Registration failed, display the error message
+                        const errorMessage = document.getElementById("error-message");
+                        errorMessage.textContent = data.message;
+                        alert(data.message)
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
+
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            console.log("click me");
+
+            // Get the form input values
+            const email = loginForm.email.value;
+            const password = loginForm.password.value;
+            console.log(email,password)
+
+            // Create the login data object
+            const loginData = {
+                email: email,
+                password: password
+            };
+            console.log(loginData)
+
+            // Send a POST request to the server
+            fetch("http://localhost:3000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(loginData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the server
+                    console.log(data);
+                    if (data.message === "Login successful") {
+                        // Login successful, redirect to the home page
+                        alert("login successfully")
+                        window.location.href = "index.html"
+                    } else {
+                        // Login failed, display the error message
+                        const errorMessage = document.getElementById("error-message");
+                        errorMessage.textContent = data.message;
+                        alert(data.message)
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
+
+
+
+        loginToggle.addEventListener("click", () => {
+            loginToggle.classList.add("visible");
+            signupToggle.classList.remove("visible");
+            loginForm.classList.add("visible");
+            signupForm.classList.remove("visible");
+        });
+
+        signupToggle.addEventListener("click", () => {
+            signupToggle.classList.add("visible");
+            loginToggle.classList.remove("visible");
+            signupForm.classList.add("visible");
+            loginForm.classList.remove("visible");
+        });
+
+    // Rest of your existing JavaScript code here
+    </script>
+</body>
+
+</html>
